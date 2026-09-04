@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shift Schedule · Combined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Merged Styles ===== */
+    :root{
+      --paper:#f8f9fa;
+      --surface:#ffffff;
+      --surface-alt:#f1f3f5;
+      --raised:#e9ecef;
+      --line:#dee2e6;
+      --ink:#212529;
+      --muted:#6c757d;
+      --faint:#adb5bd;
+      --emerald:#0b7a5f;
+      --emerald-dim:#e6f4ef;
+      --gold:#9c6f0e;
+      --gold-dim:#fdf4e3;
+      --plum:#6f4a86;
+      --plum-dim:#f0eaf5;
+      --info:#2c7be5;
+      --info-dim:#e7f1fd;
+      --danger:#c0392b;
+      --radius:12px;
+      --font-display:'Fraunces','Georgia',serif;
+      --font-body:'Inter', 'Hind Siliguri', sans-serif;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      background:var(--paper);
+      color:var(--ink);
+      font-family:var(--font-body);
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:40px 24px 70px;
+    }
+
+    header.top{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+      padding-bottom:24px;
+      border-bottom:1px solid var(--line);
+    }
+    header.top h1{
+      font-family:var(--font-display);
+      font-size:28px;
+      font-weight:600;
+      margin:0;
+      letter-spacing:-0.5px;
+      color:var(--ink);
+    }
+    header.top .updated{
+      font-size:12.5px;
+      color:var(--faint);
+      font-family:var(--font-body);
+    }
+
+    /* ---- Tab Navigation ---- */
+    .view-nav{
+      display:flex;
+      gap:10px;
+      margin-bottom:24px;
+      border-bottom:1px solid var(--line);
+    }
+    .nav-btn{
+      background:transparent;
+      border:none;
+      padding:12px 18px;
+      font-size:14px;
+      font-family:var(--font-body);
+      font-weight:500;
+      color:var(--muted);
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:color .15s ease, border-color .15s ease;
+    }
+    .nav-btn:hover{ color:var(--ink); }
+    .nav-btn.active{ 
+      color:var(--emerald); 
+      border-bottom-color:var(--emerald); 
+    }
+
+    /* ---- Date Navigation (New) ---- */
+    .date-nav{
+      display:flex;
+      gap:10px;
+      margin-bottom:24px;
+      flex-wrap:wrap;
+    }
+    .date-btn{
+      background:var(--surface);
+      border:1px solid var(--line);
+      color:var(--muted);
+      padding:10px 18px;
+      border-radius:8px;
+      font-family:var(--font-body);
+      font-weight:600;
+      font-size:14px;
+      cursor:pointer;
+      transition:all .15s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .date-btn:hover{
+      border-color:var(--emerald);
+      color:var(--emerald);
+    }
+    .date-btn.active{
+      background:var(--emerald);
+      color:#fff;
+      border-color:var(--emerald);
+    }
+
+    /* ---- Shared Components ---- */
+    .filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:16px;
+      margin-bottom:24px;
+      align-items:flex-end;
+      background:var(--surface);
+      padding:20px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:0 4px 12px rgba(0,0,0,0.02);
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:150px;
+      flex:1;
+    }
+    .field.grow{ flex:1 1 220px; }
+    .field label{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:500;
+    }
+    select, input[type="text"], input[type="date"]{
+      background:var(--surface-alt);
+      border:1px solid var(--line);
+      color:var(--ink);
+      border-radius:8px;
+      padding:11px 14px;
+      font-size:14px;
+      font-family:var(--font-body);
+      outline:none;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    select:focus, input[type="text"]:focus, input[type="date"]:focus{ 
+      border-color:var(--emerald); 
+      box-shadow:0 0 0 3px var(--emerald-dim);
+      background:var(--surface);
+    }
+    select{ cursor:pointer; }
+
+    .clear-btn, .reset-btn{
+      align-self:flex-end;
+      background:transparent;
+      border:1px solid var(--line);
+      color:var(--muted);
+      border-radius:8px;
+      padding:11px 20px;
+      font-size:13px;
+      font-family:var(--font-body);
+      font-weight:500;
+      cursor:pointer;
+      transition:all .15s ease;
+    }
+    .clear-btn:hover, .reset-btn:hover{ border-color:var(--ink); color:var(--ink); }
+
+    .pill{
+      display:inline-block;
+      padding:4px 12px;
+      border-radius:20px;
+      font-size:11.5px;
+      font-weight:600;
+      font-family:var(--font-body);
+      flex-shrink:0;
+    }
+    .pill.eu{ background:var(--emerald-dim); color:var(--emerald); }
+    .pill.glo{ background:var(--gold-dim); color:var(--gold); }
+    .pill.udp{ background:var(--plum-dim); color:var(--plum); }
+    .pill.other{ background:var(--info-dim); color:var(--info); }
+    .pill.off{ background:var(--raised); color:var(--muted); }
+
+    /* ---- Today View (Professional Dashboard) ---- */
+    .hero-date{
+      font-family:var(--font-display);
+      font-size:28px;
+      font-weight:600;
+      color:var(--ink);
+      margin-bottom:8px;
+    }
+    .hero-sub{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:32px;
+    }
+
+    .stat-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+      margin-bottom:36px;
+    }
+    .stat-chip{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.02);
+      position:relative;
+      overflow:hidden;
+    }
+    .stat-chip::before{
+      content:'';
+      position:absolute;
+      top:0; left:0; bottom:0;
+      width:4px;
+      background:var(--faint);
+    }
+    .stat-chip .n{ font-family:var(--font-display); font-size:32px; font-weight:700; line-height:1; color:var(--ink); }
+    .stat-chip .l{ font-size:13px; color:var(--muted); font-weight:500; }
+    
+    .stat-chip.eu::before{ background:var(--emerald); }
+    .stat-chip.glo::before{ background:var(--gold); }
+    .stat-chip.udp::before{ background:var(--plum); }
+
+    .shift-group{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:var(--surface);
+      margin-bottom:24px;
+      overflow:hidden;
+      box-shadow:0 4px 12px rgba(0,0,0,0.02);
+    }
+    .shift-group.off-group{ opacity:0.8; border-style:dashed; }
+    
+    .shift-group-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 24px;
+      background:var(--surface-alt);
+      border-bottom:1px solid var(--line);
+    }
+    .shift-group-header .name{ 
+      font-family:var(--font-display); 
+      font-weight:600; 
+      font-size:18px; 
+      color:var(--ink); 
+      display:flex; 
+      align-items:center; 
+      gap:10px; 
+    }
+    .shift-group-header .name::before {
+      content:'';
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--emerald);
+    }
+    .shift-group.off-group .shift-group-header .name::before {
+      background:var(--faint);
+    }
+    .shift-group-header .count{ 
+      font-size:12px; 
+      color:var(--muted); 
+      background:var(--surface); 
+      border:1px solid var(--line); 
+      border-radius:999px; 
+      padding:5px 14px; 
+      font-weight:500;
+    }
+    
+    /* Agent Grid Layout */
+    .agent-list{ 
+      display:grid; 
+      grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+      gap:1px;
+      background:var(--line);
+    }
+    .agent-row{
+      background:var(--surface);
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:16px 24px;
+      font-size:14px;
+      transition:background-color .12s ease;
+      min-width: 0; 
+    }
+    .agent-row:hover{ background:var(--surface-alt); }
+
+    .avatar{
+      width:38px; height:38px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:var(--font-display); font-weight:600; font-size:14px;
+      flex-shrink:0;
+    }
+    .avatar.eu{ background:var(--emerald-dim); color:var(--emerald); }
+    .avatar.glo{ background:var(--gold-dim); color:var(--gold); }
+    .avatar.udp{ background:var(--plum-dim); color:var(--plum); }
+    .avatar.other{ background:var(--raised); color:var(--muted); }
+
+    .agent-info{ min-width:0; display:flex; flex-direction:column; gap:2px; flex:1; }
+    .agent-info .name{ 
+      color:var(--ink); 
+      font-weight:600; 
+      white-space: normal; 
+      word-break: break-word; 
+      line-height: 1.3;
+    }
+    .agent-info .sysid{ color:var(--faint); font-size:12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ---- Details & History Tables ---- */
+    .summary{ font-size:13px; color:var(--muted); margin-bottom:14px; }
+    .summary b{ color:var(--ink); font-weight:600; }
+
+    .table-header{
+      font-family:var(--font-display);
+      font-size:20px;
+      font-weight:600;
+      margin-bottom:16px;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .table-header span.badge{
+      font-family:var(--font-body);
+      font-size:13px;
+      background:var(--surface-alt);
+      color:var(--muted);
+      padding:4px 10px;
+      border-radius:20px;
+      font-weight:500;
+    }
+
+    .table-shell{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      overflow:auto;
+      background:var(--surface);
+      box-shadow:0 4px 12px rgba(0,0,0,0.02);
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
+      min-width:640px;
+    }
+    thead th{
+      position:sticky; top:0;
+      background:var(--surface-alt);
+      text-align:left;
+      padding:14px 20px;
+      font-weight:600;
+      font-size:12.5px;
+      color:var(--muted);
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
+      text-transform:uppercase;
+      letter-spacing:0.5px;
+    }
+    tbody td{
+      padding:14px 20px;
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
+      color:var(--ink);
+    }
+    tbody tr:nth-child(even){ background:var(--surface-alt); }
+    tbody tr:hover{ background:var(--raised); }
+    tbody tr:last-child td{ border-bottom:none; }
+    .off-row td{ color:var(--faint); }
+    .off-tag{ color:var(--faint); font-style:normal; font-size:13px; }
+
+    .state-msg{
+      padding:60px 20px;
+      text-align:center;
+      color:var(--muted);
+      font-size:15px;
+      background:var(--surface);
+      border:1px dashed var(--line);
+      border-radius:var(--radius);
+    }
+    .state-msg.error{ color:var(--danger); border-color:var(--danger); }
+
+    /* ---- Agent Stats Cards ---- */
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:16px;
+      margin-bottom:32px;
+    }
+    .stat-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.02);
+    }
+    .stat-card .label{ font-size:12px; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:0.5px; }
+    .stat-card .value{ font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--ink); line-height:1.2; }
+    .stat-card .sub{ font-size:12px; color:var(--faint); }
+    .stat-card.highlight{ border-left:4px solid var(--info); }
+    .stat-card.success{ border-left:4px solid var(--emerald); }
+    .stat-card.warning{ border-left:4px solid var(--gold); }
+    .stat-card.neutral{ border-left:4px solid var(--plum); }
+
+    footer.note{
+      margin-top:40px;
+      font-size:12px;
+      color:var(--faint);
+      line-height:1.6;
+      text-align:center;
+    }
+
+    @media (max-width:640px){
+      .wrap{ padding:24px 16px 48px; }
+      header.top h1{ font-size:21px; }
+      .hero-date{ font-size:22px; }
+      .field{ min-width:130px; }
+      .stats-grid{ grid-template-columns:repeat(2, 1fr); }
+      .filters{ flex-direction:column; align-items:stretch; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Shift Schedule</h1>
+    <div class="updated" id="updatedAt">লোড হচ্ছে…</div>
+  </header>
+
+  <!-- Main Navigation Tabs -->
+  <nav class="view-nav">
+    <button class="nav-btn active" data-view="todayView">আজকের শিডিউল</button>
+    <button class="nav-btn" data-view="detailsView">সব এন্ট্রি</button>
+    <button class="nav-btn" data-view="agentView">এজেন্ট হিস্টোরি</button>
+  </nav>
+
+  <!-- ========== TODAY VIEW ========== -->
+  <div id="todayView">
+    <!-- Date Navigation Buttons -->
+    <div class="date-nav" id="dateNav"></div>
+
+    <div class="hero-date" id="heroDate">তারিখ লোড হচ্ছে…</div>
+    <div class="hero-sub">নিচে নির্বাচিত তারিখের জন্য নির্ধারিত এজেন্টদের ডিউটি শিডিউল দেখানো হলো।</div>
+    
+    <div class="stat-row" id="statRow"></div>
+    
+    <div id="groupsHolder"></div>
+    <div class="state-msg" id="stateMsgToday">লোড হচ্ছে…</div>
+  </div>
+
+  <!-- ========== DETAILS VIEW ========== -->
+  <div id="detailsView" style="display:none;">
+    <div class="filters">
+      <div class="field">
+        <label for="fMonth">মাস</label>
+        <select id="fMonth"><option value="">সব</option></select>
+      </div>
+      <div class="field">
+        <label for="fRegion">Region</label>
+        <select id="fRegion"><option value="">সব</option></select>
+      </div>
+      <div class="field">
+        <label for="fShift">Shift</label>
+        <select id="fShift"><option value="">সব</option></select>
+      </div>
+      <div class="field grow">
+        <label for="fAgent">Agent নাম / System ID খুঁজুন</label>
+        <input type="text" id="fAgent" placeholder="যেমন: Hafsa Rahman">
+      </div>
+      <button class="clear-btn" id="clearBtn">রিসেট</button>
+    </div>
+
+    <div class="summary" id="summary"></div>
+
+    <div class="table-shell">
+      <table id="schedTable" style="display:none">
+        <thead>
+          <tr><th>Date</th><th>Shift</th><th>System ID</th><th>Agent Name</th><th>Region</th></tr>
+        </thead>
+        <tbody id="tbodyDetails"></tbody>
+      </table>
+      <div class="state-msg" id="stateMsgDetails">লোড হচ্ছে…</div>
+    </div>
+  </div>
+
+  <!-- ========== AGENT HISTORY VIEW ========== -->
+  <div id="agentView" style="display:none;">
+    <div class="filters">
+      <div class="field grow">
+        <label for="agentSelect">Select Agent</label>
+        <select id="agentSelect"><option value="">Loading agents...</option></select>
+      </div>
+      <div class="field">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate">
+      </div>
+      <button class="reset-btn" id="resetBtn">Reset Filters</button>
+    </div>
+
+    <div class="stats-grid" id="statsGrid" style="display:none;">
+      <div class="stat-card success">
+        <span class="label">Total Duty Days</span>
+        <span class="value" id="statDutyDays">0</span>
+        <span class="sub">Within selected range</span>
+      </div>
+      <div class="stat-card neutral">
+        <span class="label">Total Off Days</span>
+        <span class="value" id="statOffDays">0</span>
+        <span class="sub">Total days minus duty days</span>
+      </div>
+      <div class="stat-card highlight">
+        <span class="label">Most Frequent Shift</span>
+        <span class="value" id="statTopShift" style="font-size:20px;">N/A</span>
+        <span class="sub" id="statTopShiftCount">No shifts worked</span>
+      </div>
+      <div class="stat-card warning">
+        <span class="label">Regions Worked</span>
+        <span class="value" id="statRegions" style="font-size:20px;">N/A</span>
+        <span class="sub">Active regions</span>
+      </div>
+    </div>
+
+    <div id="tableSection" style="display:none; margin-top:36px;">
+      <div class="table-header">
+        Shift History <span class="badge" id="resultCount">0 entries</span>
+      </div>
+      <div class="table-shell">
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Day</th>
+              <th>Shift</th>
+              <th>Region</th>
+              <th>System ID</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyAgent"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="state-msg" id="stateMsgAgent">Please select an agent to view their shift history.</div>
+  </div>
+
+  <footer class="note">
+    কোনো লগইন নেই — সবাই দেখতে পারে। Sheet-এ পরিবর্তন করলে এই পেজ রিফ্রেশ করলেই নতুন তথ্য দেখাবে।
+  </footer>
+</div>
+
+<script>
+  /* ==============================================================
+     SHARED LOGIC & CONFIG
+     ============================================================== */
+  const CONFIG = {
+    SHEET_ID: "1qIhXOv2jU2pQagJbzkYms1vAQ9JPtAhwSNmibGfFZS4",
+    SHEET_NAME: "Schedule",
+    REFRESH_MS: 300000 // 5 minutes
+  };
+
+  const csvUrl = () =>
+    `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(CONFIG.SHEET_NAME)}&_=${Date.now()}`;
+
+  // ---- Custom CSV Parser ----
+  function parseCSV(text){
+    const rows = [];
+    let row = [], field = '', inQuotes = false;
+    for(let i=0;i<text.length;i++){
+      const c = text[i], next = text[i+1];
+      if(inQuotes){
+        if(c === '"' && next === '"'){ field += '"'; i++; }
+        else if(c === '"'){ inQuotes = false; }
+        else{ field += c; }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ','){ row.push(field); field=''; }
+        else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+        else if(c === '\r'){ /* skip */ }
+        else{ field += c; }
+      }
+    }
+    if(field.length || row.length){ row.push(field); rows.push(row); }
+    return rows.filter(r => r.some(c => c.trim() !== ''));
+  }
+
+  function normalizeDate(raw){
+    if(!raw) return {sortKey:'', display:'', dayName:'', month:''};
+    raw = raw.trim();
+    let d;
+    let m = raw.match(/^(\d{1,2})-([A-Za-z]{3})-(\d{2,4})$/);
+    if(m){
+      const monthMap = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+      let yr = m[3].length===2 ? 2000+parseInt(m[3]) : parseInt(m[3]);
+      d = new Date(yr, monthMap[m[2]], parseInt(m[1]));
+    } else {
+      d = new Date(raw);
+    }
+    if(isNaN(d)) return {sortKey:raw, display:raw, dayName:'', month:''};
+    
+    const dd = String(d.getDate()).padStart(2,'0');
+    const monthsEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const daysEn = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    
+    return {
+      sortKey: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${dd}`,
+      display: `${dd} ${monthsEn[d.getMonth()]} ${d.getFullYear()}`,
+      dayName: daysEn[d.getDay()],
+      month: `${monthsEn[d.getMonth()]} ${d.getFullYear()}`
+    };
+  }
+
+  function getSortKeyFromDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
+  function regionPillClass(region){
+    const r = (region||'').trim().toUpperCase();
+    if(r === 'EU') return 'eu';
+    if(r === 'GLO' || r === 'GLOBAL') return 'glo';
+    if(r === 'UDP') return 'udp';
+    if(r === 'OFF') return 'off';
+    return 'other';
+  }
+
+  // Convert numbers to Bengali numerals
+  function toBn(num){
+    if (isNaN(num)) return num;
+    const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+    return String(num).split('').map(c => /\d/.test(c) ? bn[c] : c).join('');
+  }
+
+  async function fetchScheduleRows(){
+    const res = await fetch(csvUrl());
+    if(!res.ok) throw new Error('fetch failed');
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if(rows.length < 2) throw new Error('empty sheet');
+
+    const header = rows[0].map(h => h.trim().toLowerCase());
+    const idx = {
+      date: header.findIndex(h => h.includes('date')),
+      shift: header.findIndex(h => h.includes('shift')),
+      systemId: header.findIndex(h => h.includes('system')),
+      agentName: header.findIndex(h => h.includes('agent')),
+      region: header.findIndex(h => h.includes('region')),
+    };
+
+    return rows.slice(1).map(r => {
+      const dateInfo = normalizeDate(r[idx.date] || '');
+      return {
+        sortKey: dateInfo.sortKey,
+        display: dateInfo.display,
+        dayName: dateInfo.dayName,
+        month: dateInfo.month,
+        shift: (r[idx.shift] || '').trim(),
+        systemId: (r[idx.systemId] || '').trim(),
+        agentName: (r[idx.agentName] || '').trim(),
+        region: (r[idx.region] || '').trim(),
+      };
+    }).filter(r => r.agentName || r.systemId);
+  }
+
+  /* ========== GLOBAL STATE & DATA ========== */
+  let ALL_ROWS = [];
+  let SELECTED_SORT_KEY = getSortKeyFromDate(new Date()); // Defaults to today
+
+  /* ========== VIEW SWITCHER ========== */
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const targetId = btn.getAttribute('data-view');
+      document.getElementById('todayView').style.display = targetId === 'todayView' ? 'block' : 'none';
+      document.getElementById('detailsView').style.display = targetId === 'detailsView' ? 'block' : 'none';
+      document.getElementById('agentView').style.display = targetId === 'agentView' ? 'block' : 'none';
+    });
+  });
+
+  /* ========== TODAY VIEW RENDER ========== */
+  const monthsBn = ['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+  const weekdaysBn = ['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
+
+  function renderDateNav() {
+    const today = new Date();
+    const dates = [];
+    // -1 day (Yesterday), Today, +1 day (Tomorrow), +2 days (Day after tomorrow)
+    for(let i = -1; i <= 2; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      dates.push(d);
+    }
+
+    const dateNavEl = document.getElementById('dateNav');
+    dateNavEl.innerHTML = dates.map(d => {
+      const key = getSortKeyFromDate(d);
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const shortDateStr = toBn(dd) + '/' + toBn(mm);
+      const isActive = key === SELECTED_SORT_KEY ? 'active' : '';
+      return `<button class="date-btn ${isActive}" data-key="${key}">${shortDateStr}</button>`;
+    }).join('');
+
+    // Attach event listeners
+    document.querySelectorAll('.date-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        SELECTED_SORT_KEY = btn.dataset.key;
+        renderDateNav(); // Update active state
+        renderTodayView(); // Re-render stats and groups
+      });
+    });
+  }
+
+  function renderHeroDate(){
+    const d = new Date(SELECTED_SORT_KEY + 'T00:00:00');
+    if(isNaN(d)) return;
+    document.getElementById('heroDate').innerHTML =
+      `শিডিউল, ${weekdaysBn[d.getDay()]}, ${toBn(d.getDate())} ${monthsBn[d.getMonth()]} ${toBn(d.getFullYear())}`;
+  }
+
+  function renderStats(targetRows){
+    const counts = {eu:0, glo:0, udp:0, off:0};
+    targetRows.forEach(r => {
+      if(/^off$/i.test(r.shift.trim())){ counts.off++; return; }
+      const cls = regionPillClass(r.region);
+      if(counts[cls] !== undefined) counts[cls]++;
+    });
+    document.getElementById('statRow').innerHTML = `
+      <div class="stat-chip eu"><span class="n">${toBn(counts.eu)}</span><span class="l">EU-তে ডিউটিতে</span></div>
+      <div class="stat-chip glo"><span class="n">${toBn(counts.glo)}</span><span class="l">GLO-তে ডিউটিতে</span></div>
+      <div class="stat-chip udp"><span class="n">${toBn(counts.udp)}</span><span class="l">UDP-তে ডিউটিতে</span></div>
+      <div class="stat-chip"><span class="n">${toBn(counts.off)}</span><span class="l">OFF</span></div>
+    `;
+  }
+
+  function renderGroups(targetRows){
+    const holder = document.getElementById('groupsHolder');
+    const stateMsg = document.getElementById('stateMsgToday');
+
+    if(targetRows.length === 0){
+      holder.innerHTML = '';
+      stateMsg.style.display = 'block';
+      stateMsg.textContent = 'এই তারিখের জন্য কোনো শিডিউল এন্ট্রি পাওয়া যায়নি।';
+      return;
+    }
+    stateMsg.style.display = 'none';
+
+    const groups = {};
+    targetRows.forEach(r => {
+      const key = r.shift.trim() || '(শিফট ভরা হয়নি)';
+      if(!groups[key]) groups[key] = [];
+      groups[key].push(r);
+    });
+
+    const keys = Object.keys(groups).sort((a,b) => {
+      const aOff = /^off$/i.test(a), bOff = /^off$/i.test(b);
+      if(aOff && !bOff) return 1;
+      if(bOff && !aOff) return -1;
+      return a.localeCompare(b);
+    });
+
+    holder.innerHTML = keys.map(key => {
+      const isOff = /^off$/i.test(key);
+      const rows = groups[key].sort((a,b) => a.agentName.localeCompare(b.agentName));
+      return `
+        <div class="shift-group ${isOff ? 'off-group' : ''}">
+          <div class="shift-group-header">
+            <span class="name">${key}</span>
+            <span class="count">${toBn(rows.length)} জন</span>
+          </div>
+          <div class="agent-list">
+            ${rows.map(r => {
+              const hasName = r.agentName && r.agentName.trim().toUpperCase() !== 'N/A';
+              const displayName = hasName ? r.agentName : r.systemId;
+              const showId = r.systemId && r.systemId !== displayName && r.systemId.trim().toUpperCase() !== 'N/A';
+              const initials = displayName.trim().split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase();
+              const regionCls = regionPillClass(r.region);
+              return `
+              <div class="agent-row">
+                <span class="avatar ${regionCls}">${initials}</span>
+                <span class="agent-info">
+                  <span class="name">${displayName}</span>
+                  ${showId ? `<span class="sysid">ID: ${r.systemId}</span>` : ''}
+                </span>
+                <span class="pill ${regionCls}">${r.region}</span>
+              </div>
+            `;}).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderTodayView() {
+    renderHeroDate();
+    const targetRows = ALL_ROWS.filter(r => r.sortKey === SELECTED_SORT_KEY);
+    renderStats(targetRows);
+    renderGroups(targetRows);
+  }
+
+  /* ========== DETAILS VIEW RENDER ========== */
+  function populateSelect(id, values){
+    const el = document.getElementById(id);
+    const current = el.value;
+    el.innerHTML = '<option value="">সব</option>' +
+      values.map(v => `<option value="${v}">${v}</option>`).join('');
+    if(values.includes(current)) el.value = current;
+  }
+
+  function renderDetails(){
+    const month = document.getElementById('fMonth').value;
+    const region = document.getElementById('fRegion').value;
+    const shift = document.getElementById('fShift').value;
+    const agentQ = document.getElementById('fAgent').value.trim().toLowerCase();
+
+    let rows = ALL_ROWS.filter(r => {
+      if(month && r.month !== month) return false;
+      if(region && r.region !== region) return false;
+      if(shift && r.shift !== shift) return false;
+      if(agentQ && !(r.agentName.toLowerCase().includes(agentQ) || r.systemId.toLowerCase().includes(agentQ))) return false;
+      return true;
+    });
+
+    rows.sort((a,b) => a.sortKey.localeCompare(b.sortKey) || a.shift.localeCompare(b.shift));
+
+    const tbody = document.getElementById('tbodyDetails');
+    const table = document.getElementById('schedTable');
+    const stateMsg = document.getElementById('stateMsgDetails');
+
+    if(rows.length === 0){
+      table.style.display = 'none';
+      stateMsg.style.display = 'block';
+      stateMsg.textContent = 'কোনো তথ্য পাওয়া যায়নি — ফিল্টার বদলে দেখুন।';
+    } else {
+      table.style.display = 'table';
+      stateMsg.style.display = 'none';
+      tbody.innerHTML = rows.map(r => {
+        const isOff = /^off$/i.test(r.shift.trim());
+        return `<tr class="${isOff ? 'off-row' : ''}">
+          <td>${r.display}</td>
+          <td>${isOff ? '<span class="off-tag">OFF</span>' : r.shift}</td>
+          <td>${r.systemId}</td>
+          <td>${r.agentName}</td>
+          <td><span class="pill ${regionPillClass(r.region)}">${r.region}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    document.getElementById('summary').innerHTML =
+      `মোট <b>${toBn(rows.length)}</b>টি এন্ট্রি দেখানো হচ্ছে${agentQ ? ` — "${document.getElementById('fAgent').value.trim()}"-এর জন্য` : ''}`;
+  }
+
+  /* ========== AGENT HISTORY VIEW RENDER ========== */
+  function populateAgents(){
+    const agentNames = [...new Set(ALL_ROWS.map(r => r.agentName))].filter(Boolean).sort();
+    const select = document.getElementById('agentSelect');
+    select.innerHTML = '<option value="">-- Select Agent --</option>' + 
+      agentNames.map(name => `<option value="${name}">${name}</option>`).join('');
+  }
+
+  function setDefaultDates(){
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    const formatStr = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    document.getElementById('startDate').value = formatStr(firstDay);
+    document.getElementById('endDate').value = formatStr(today);
+  }
+
+  function renderHistory(){
+    const agent = document.getElementById('agentSelect').value;
+    const startDateStr = document.getElementById('startDate').value;
+    const endDateStr = document.getElementById('endDate').value;
+    
+    const statsGrid = document.getElementById('statsGrid');
+    const tableSection = document.getElementById('tableSection');
+    const stateMsg = document.getElementById('stateMsgAgent');
+
+    if(!agent){
+      statsGrid.style.display = 'none';
+      tableSection.style.display = 'none';
+      stateMsg.style.display = 'block';
+      stateMsg.textContent = 'Please select an agent to view their shift history.';
+      stateMsg.classList.remove('error');
+      return;
+    }
+
+    let filtered = ALL_ROWS.filter(r => {
+      if(r.agentName !== agent) return false;
+      if(startDateStr && r.sortKey < startDateStr) return false;
+      if(endDateStr && r.sortKey > endDateStr) return false;
+      return true;
+    });
+
+    // Calculate duty days and stats based on existing filtered records
+    let dutyDays = 0;
+    let shiftCounts = {};
+    let regions = new Set();
+    
+    filtered.forEach(r => {
+      const isOff = r.shift.trim().toUpperCase() === 'OFF';
+      if(!isOff) {
+        dutyDays++;
+        shiftCounts[r.shift] = (shiftCounts[r.shift] || 0) + 1;
+        if(r.region) regions.add(r.region);
+      }
+    });
+
+    // Calculate total days in range
+    let totalDaysInRange = 0;
+    const start = new Date(startDateStr + 'T00:00:00');
+    const end = new Date(endDateStr + 'T00:00:00');
+
+    if (!isNaN(start) && !isNaN(end)) {
+      const diffTime = Math.abs(end - start);
+      totalDaysInRange = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 to include start date
+    } else {
+      totalDaysInRange = filtered.length; // fallback
+    }
+
+    let offDays = totalDaysInRange - dutyDays;
+    if (offDays < 0) offDays = 0;
+
+    let topShift = 'N/A';
+    let maxCount = 0;
+    for(let s in shiftCounts){
+      if(shiftCounts[s] > maxCount){
+        maxCount = shiftCounts[s];
+        topShift = s;
+      }
+    }
+
+    document.getElementById('statDutyDays').textContent = dutyDays;
+    document.getElementById('statOffDays').textContent = offDays;
+    document.getElementById('statTopShift').textContent = topShift;
+    document.getElementById('statTopShiftCount').textContent = maxCount > 0 ? `Worked ${maxCount} times` : 'No shifts worked';
+    document.getElementById('statRegions').textContent = regions.size > 0 ? Array.from(regions).join(', ') : 'None';
+    statsGrid.style.display = 'grid';
+
+    // --- CODE TO ADD MISSING DAYS AS "OFF" ---
+    let tableRows = [];
+
+    if (isNaN(start) || isNaN(end)) {
+      tableRows = filtered;
+    } else {
+      let current = new Date(start);
+      const monthsEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const daysEn = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      
+      while(current <= end) {
+        let sortKey = `${current.getFullYear()}-${String(current.getMonth()+1).padStart(2,'0')}-${String(current.getDate()).padStart(2,'0')}`;
+        let found = filtered.find(r => r.sortKey === sortKey);
+        
+        if (found) {
+          tableRows.push(found);
+        } else {
+          const dd = String(current.getDate()).padStart(2,'0');
+          tableRows.push({
+            sortKey: sortKey,
+            display: `${dd} ${monthsEn[current.getMonth()]} ${current.getFullYear()}`,
+            dayName: daysEn[current.getDay()],
+            shift: 'OFF',
+            region: '-',
+            systemId: '-'
+          });
+        }
+        current.setDate(current.getDate() + 1);
+      }
+    }
+
+    if(tableRows.length === 0){
+       statsGrid.style.display = 'none';
+       tableSection.style.display = 'none';
+       stateMsg.style.display = 'block';
+       stateMsg.textContent = `No records found for ${agent} in the selected date range.`;
+       return;
+    }
+
+    document.getElementById('resultCount').textContent = `${tableRows.length} entries found`;
+    const tbody = document.getElementById('tbodyAgent');
+    tbody.innerHTML = tableRows.map(r => {
+      const isOff = r.shift.trim().toUpperCase() === 'OFF';
+      const pillClass = isOff ? 'off' : regionPillClass(r.region);
+      return `<tr class="${isOff ? 'off-row' : ''}">
+        <td>${r.display}</td>
+        <td style="color:var(--muted); font-weight:500;">${r.dayName}</td>
+        <td><span class="pill ${pillClass}">${r.shift}</span></td>
+        <td>${r.region || '-'}</td>
+        <td style="color:var(--muted);">${r.systemId || '-'}</td>
+      </tr>`;
+    }).join('');
+    
+    tableSection.style.display = 'block';
+    stateMsg.style.display = 'none';
+  }
+
+  /* ========== MAIN LOAD ========== */
+  async function loadAll(){
+    const stateMsgToday = document.getElementById('stateMsgToday');
+    const updatedAtEl = document.getElementById('updatedAt');
+    const prevUpdatedText = updatedAtEl.textContent;
+
+    try{
+      const newRows = await fetchScheduleRows();
+      ALL_ROWS = newRows; // Only update global state if fetch succeeds
+
+      // Today View
+      renderDateNav();
+      renderTodayView();
+
+      // Details View
+      populateSelect('fMonth', [...new Set(ALL_ROWS.map(r=>r.month))].filter(Boolean));
+      populateSelect('fRegion', [...new Set(ALL_ROWS.map(r=>r.region))].filter(Boolean));
+      populateSelect('fShift', [...new Set(ALL_ROWS.map(r=>r.shift))].filter(Boolean).sort());
+      renderDetails();
+
+      // Agent View
+      populateAgents();
+      setDefaultDates();
+      renderHistory();
+
+      const updated = 'সবশেষ আপডেট: ' + new Date().toLocaleString('en-US', {hour:'2-digit', minute:'2-digit', day:'2-digit', month:'short'});
+      updatedAtEl.textContent = updated;
+
+      stateMsgToday.classList.remove('error');
+    } catch(err){
+      // If refresh fails, retain old data but show a warning in the header
+      if (ALL_ROWS.length === 0) {
+        stateMsgToday.classList.add('error');
+        stateMsgToday.style.display = 'block';
+        document.getElementById('groupsHolder').innerHTML = '';
+        stateMsgToday.textContent = 'ডেটা লোড করা যায়নি। Sheet শেয়ারিং "Anyone with the link – Viewer" আছে কিনা চেক করুন।';
+        updatedAtEl.textContent = 'ডেটা লোড করতে সমস্যা হচ্ছে...';
+      } else {
+        updatedAtEl.textContent = 'সবশেষ আপডেট ব্যর্থ হয়েছে (পুরোনো ডেটা দেখাচ্ছে)';
+      }
+      console.error(err);
+    }
+  }
+
+  /* ========== EVENT BINDINGS ========== */
+  // Details Filters
+  ['fMonth','fRegion','fShift'].forEach(id => document.getElementById(id).addEventListener('change', renderDetails));
+  document.getElementById('fAgent').addEventListener('input', renderDetails);
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    document.getElementById('fMonth').value = '';
+    document.getElementById('fRegion').value = '';
+    document.getElementById('fShift').value = '';
+    document.getElementById('fAgent').value = '';
+    renderDetails();
+  });
+
+  // Agent History Filters
+  document.getElementById('agentSelect').addEventListener('change', renderHistory);
+  document.getElementById('startDate').addEventListener('change', renderHistory);
+  document.getElementById('endDate').addEventListener('change', renderHistory);
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('agentSelect').value = '';
+    setDefaultDates();
+    renderHistory();
+  });
+
+  // Initial Load & Auto Refresh
+  loadAll();
+  setInterval(loadAll, CONFIG.REFRESH_MS);
+</script>
+</body>
+</html>
