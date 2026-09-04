@@ -97,7 +97,7 @@
       border-bottom-color:var(--emerald); 
     }
 
-    /* ---- Date Navigation (New) ---- */
+    /* ---- Date Navigation ---- */
     .date-nav{
       display:flex;
       gap:10px;
@@ -163,6 +163,7 @@
       font-family:var(--font-body);
       outline:none;
       transition:border-color .15s ease, box-shadow .15s ease;
+      width: 100%;
     }
     select:focus, input[type="text"]:focus, input[type="date"]:focus{ 
       border-color:var(--emerald); 
@@ -440,13 +441,52 @@
       text-align:center;
     }
 
+    /* ===== MOBILE RESPONSIVE FIXES ===== */
     @media (max-width:640px){
       .wrap{ padding:24px 16px 48px; }
-      header.top h1{ font-size:21px; }
-      .hero-date{ font-size:22px; }
-      .field{ min-width:130px; }
-      .stats-grid{ grid-template-columns:repeat(2, 1fr); }
-      .filters{ flex-direction:column; align-items:stretch; }
+      header.top{ flex-direction:column; align-items:flex-start; gap:8px; }
+      header.top h1{ font-size:24px; }
+      header.top .updated{ font-size: 11px; }
+      
+      /* Date Buttons Grid for Mobile */
+      .date-nav {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .date-btn {
+        padding: 10px 5px;
+        text-align: center;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .hero-date{ font-size:22px; margin-top: 10px; }
+      .hero-sub{ margin-bottom: 24px; }
+      
+      /* Filters Grid for Mobile */
+      .filters{ 
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px;
+      }
+      .field {
+        width: 100%;
+        min-width: 100%;
+      }
+      .clear-btn, .reset-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .stats-grid{ grid-template-columns:repeat(2, 1fr); gap: 12px; }
+      .stat-card { padding: 14px; }
+      .stat-card .value { font-size: 22px; }
+      
+      .table-shell { border-radius: 8px; }
+      .agent-list { grid-template-columns: 1fr; }
     }
   </style>
 </head>
