@@ -790,7 +790,7 @@
     const d = new Date(SELECTED_SORT_KEY + 'T00:00:00');
     if(isNaN(d)) return;
     document.getElementById('heroDate').innerHTML =
-      `শিডিউল, ${weekdaysBn[d.getDay()]}, ${toBn(d.getDate())} ${monthsBn[d.getMonth()]} ${toBn(d.getFullYear())}`;
+      `${weekdaysBn[d.getDay()]}, ${toBn(d.getDate())} ${monthsBn[d.getMonth()]} ${toBn(d.getFullYear())}`;
   }
 
   function renderStats(targetRows){
