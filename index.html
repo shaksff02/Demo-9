@@ -794,17 +794,18 @@
   }
 
   function renderStats(targetRows){
-    const counts = {eu:0, glo:0, udp:0, off:0};
+    const counts = {eu:0, glo:0, udp:0};
     targetRows.forEach(r => {
-      if(/^off$/i.test(r.shift.trim())){ counts.off++; return; }
+      if(/^off$/i.test(r.shift.trim())) return; // Skip OFF shifts
       const cls = regionPillClass(r.region);
       if(counts[cls] !== undefined) counts[cls]++;
     });
+    
+    // OFF card removed as per request
     document.getElementById('statRow').innerHTML = `
       <div class="stat-chip eu"><span class="n">${toBn(counts.eu)}</span><span class="l">EU-তে ডিউটিতে</span></div>
       <div class="stat-chip glo"><span class="n">${toBn(counts.glo)}</span><span class="l">GLO-তে ডিউটিতে</span></div>
       <div class="stat-chip udp"><span class="n">${toBn(counts.udp)}</span><span class="l">UDP-তে ডিউটিতে</span></div>
-      <div class="stat-chip"><span class="n">${toBn(counts.off)}</span><span class="l">OFF</span></div>
     `;
   }
 
