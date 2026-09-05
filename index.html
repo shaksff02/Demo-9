@@ -171,6 +171,7 @@
       background:var(--surface);
     }
     select{ cursor:pointer; }
+    input[type="date"]{ cursor:pointer; }
 
     .clear-btn, .reset-btn{
       align-self:flex-end;
@@ -936,9 +937,19 @@
 
   function setDefaultDates(){
     const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
     const formatStr = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    document.getElementById('startDate').value = formatStr(firstDay);
+
+    // Start date default: 15th of previous month.
+    // Once the 16th of the current month has passed, default becomes the 15th of the current month.
+    let startYear = today.getFullYear();
+    let startMonth = today.getMonth();
+    if(today.getDate() < 16){
+      startMonth -= 1; // go to previous month
+      if(startMonth < 0){ startMonth = 11; startYear -= 1; }
+    }
+    const startDay = new Date(startYear, startMonth, 15);
+
+    document.getElementById('startDate').value = formatStr(startDay);
     document.getElementById('endDate').value = formatStr(today);
   }
 
@@ -1129,6 +1140,15 @@
   document.getElementById('agentSelect').addEventListener('change', renderHistory);
   document.getElementById('startDate').addEventListener('change', renderHistory);
   document.getElementById('endDate').addEventListener('change', renderHistory);
+
+  // Clicking anywhere on a date field opens its calendar picker (not just the icon)
+  document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.addEventListener('click', () => {
+      if(typeof input.showPicker === 'function'){
+        try{ input.showPicker(); }catch(e){ /* ignore if not allowed */ }
+      }
+    });
+  });
   document.getElementById('resetBtn').addEventListener('click', () => {
     document.getElementById('agentSelect').value = '';
     setDefaultDates();
